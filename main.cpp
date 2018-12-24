@@ -230,7 +230,7 @@ int main()
   Qux qux;
 
   int n = 46;
-
+  tryt {
   s.registerObserver(EventType::YELLOW, std::bind(&Baz::myprint, std::ref(baz), n, std::ref(q)));
   s.registerObserver(EventType::ORANGE, std::bind(&Foo::eventFoo, std::ref(foo), n, std::ref(q)));
   s.registerObserver(EventType::RED, std::bind(&Bar::eventBar, std::ref(bar), n, std::ref(q)));
@@ -239,7 +239,20 @@ int main()
   std::thread thr_bar(&Bar::run, std::ref(bar));
   std::thread thr_baz(&Baz::run, std::ref(baz));
   std::thread thr_qux(&Qux::run, std::ref(qux), std::ref(s), std::ref(q));
-
+  }
+  catch (const std::overflow_error& e) {
+      std::cout << "[ERROR][RUN] " << e.what() << " <==========" << std::endl;
+  }
+  catch (const std::runtime_error& e) {
+      std::cout << "[ERROR][RUN] " << e.what() << " <==========" << std::endl;
+  }
+  catch(const std::exception &e) {
+      std::cout << "[ERROR][RUN] " << e.what() << " <==========" << std::endl;
+  }
+  catch (...) {
+      std::cout << "[ERROR][RUN] Unexpected Exception! Something wrong it's going here! <==========" << std::endl;
+  }
+ 
   auto count = 0;
 
   while(true) {
